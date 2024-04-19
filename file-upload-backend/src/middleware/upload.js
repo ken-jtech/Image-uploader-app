@@ -2,7 +2,7 @@ const util = require("util");
 const multer = require("multer");
 
 
-let storage = multer.diskStorage({
+const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, __basedir + "/uploads/");
   },
@@ -12,10 +12,13 @@ let storage = multer.diskStorage({
   },
 });
 
-let uploadFile = multer({
-  storage: storage,
-  
-}).single("file");
 
-let uploadFileMiddleware = util.promisify(uploadFile);
+const uploadFile = multer({
+  storage: storage,
+}).single("file"); 
+
+
+const uploadFileMiddleware = util.promisify(uploadFile);
+
+
 module.exports = uploadFileMiddleware;

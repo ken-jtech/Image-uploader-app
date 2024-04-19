@@ -7,27 +7,32 @@ const upload = async (req, res) => {
   try {
     await uploadFile(req, res);
 
-    if (req.file == undefined) {
+    if (!req.file) {
       return res.status(400).send({
         success: 0,
-         message: "Please upload a file!" });
+        message: "Please upload a file!"
+      });
     }
 
     res.status(200).send({
       success: 1,
-      message: "Uploaded the file successfully: " + req.file.originalname,
+      message: "Uploaded the file successfully: " + req.file.originalname
     });
   } catch (err) {
     console.log(err);
 
-    
+    let uploadErrorMessage = "Could not upload the file: Unknown file";
+    if (req.file && req.file.originalname) {
+      uploadErrorMessage = `Could not upload the file: ${req.file.originalname}. ${err}`;
+    }
 
     res.status(500).send({
       success: 0,
-      message: `Could not upload the file: ${req.file.originalname}. ${err}`,
+      message: uploadErrorMessage
     });
   }
 };
+
 
 const getListFiles = (req, res) => {
   
